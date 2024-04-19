@@ -8,8 +8,7 @@
 - AWS가 제공하는 EKS 모듈을 가져오되, 고정되지 않은 Customizable field는 변수로 대체
 - CIDR 분할 범위를 `cidrsubnets` 함수를 통해 일정하게 분할.
 - 대다수의 addon을 Terraform을 통해 관리함으로써 manual한 영역 최소화
-    - 현재는 ebs-csi-driver 만 설치
-    - Karpenter, gp3 Storageclass, externalDNS 까지 모두 관리
+
 
 ## 모듈화 과정
 ### 1. EKS를 이루고 있는 리소스를 다음과 같이 vpc, eks, vpc-peering으로 분리한다.
@@ -17,7 +16,7 @@
 **As-Is**
 ```
 eks
-├──root
+└──root
     ├── aws-ebs-csi-driver-trust-policy.json
     ├── main.tf
     ├── outputs.tf
@@ -27,7 +26,7 @@ eks
 ```
 **To-Be**
 ```
-eks-jason
+eks
 ├── module
 │   ├── eks
 │   │   ├── ebs-csi.tf
@@ -39,14 +38,27 @@ eks-jason
 │   │   ├── main.tf
 │   │   ├── outputs.tf
 │   │   └── variables.tf
-│   └── vpc-peering
-│       ├── main.tf
-│       └── variables.tf
+│   ├── vpc-peering
+│   │   ├── main.tf
+│   │   └── variables.tf
+│   ├── s3_gateway
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── dynamoDB_gateway
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
 └── root
+    ├── locals.tf
     ├── main.tf
+    ├── outputs.tf
     ├── terraform.tf
     └── variable.tf
 ```
+더 복잡해진것 아닌가? 싶지만 실제로는 module 하위 파일은 신경쓰지 않아도 되며, root폴더 내 변수 저장용 variable.tf만 변경하면 된다.
+그 전에는 main.tf에서 모든 resource를 하드코딩 했어야 했다.
+
 모듈화는 기본적으로 **"Root Module이 핵심 리소스를 모듈화한 Child Module를 Import"** 하는 방식으로 진행한다.
 - Child Module 은 핵심 리소스를 포함하는 모듈이며, 세부 사항들이 동적인 값들로 이루어져 있다.
 ```

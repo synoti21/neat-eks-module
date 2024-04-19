@@ -1,7 +1,7 @@
 variable "vpc_cidr" {
   type = string
   description = "VPC의 CIDR 블록 (IP 대역 범위)"
-  default = "10.12.0.0/16"
+  default = "10.0.0.0/16"
 }
 
 variable "azs_count" {
@@ -31,7 +31,7 @@ variable "enable_dns_hostnames" {
 variable "eks_env" {
   type = string
   description = "EKS가 배포될 환경의 이름 (ex. dev, qa, prod 등)"
-  default = "test_tf"
+  default = "root"
 }
 
 variable "region" {
