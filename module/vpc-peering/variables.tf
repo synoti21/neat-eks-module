@@ -8,6 +8,11 @@ variable "requester_vpc_id" {
   description = "vpc peering 요청을 request 하는 vpc의 ID"
 }
 
+variable "peering_accepter_vpc" {
+  type = string
+  description = "vpc peering 요청을 request 하는 vpc의 이름"
+}
+
 variable "region" {
   type = string
   description = "EKS가 배포될 AWS 리전"

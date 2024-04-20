@@ -28,6 +28,18 @@ variable "enable_dns_hostnames" {
   default = true
 }
 
+variable "enable_vpc_peering" {
+  type = bool
+  description = "VPC Peering 생성 여부"
+  default = false
+}
+
+variable "peering_accepter_vpc" {
+  type = string
+  description = "VPC peering 대상 VPC의 이름"
+  default = ""
+}
+
 variable "eks_env" {
   type = string
   description = "EKS가 배포될 환경의 이름 (ex. dev, qa, prod 등)"

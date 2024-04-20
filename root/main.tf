@@ -24,7 +24,10 @@ module "vpc-peering" {
   source = "../module/vpc-peering"
   requester_name = "${var.eks_env}"
   requester_vpc_id = module.vpc.vpc_id
+  peering_accepter_vpc = var.peering_accepter_vpc
   region = var.region
+
+  count = var.enable_vpc_peering ? 1 : 0
 }
 
 module "eks" {
