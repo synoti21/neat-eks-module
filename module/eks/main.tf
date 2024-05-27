@@ -13,7 +13,6 @@ module "eks" {
 
   cluster_name    = "${var.eks_env}-eks"
   cluster_version = var.eks_version
-  cluster_service_ipv4_cidr = var.cluster_service_ipv4_cidr
   cluster_endpoint_public_access = var.cluster_endpoint_public_access
 
   cluster_addons = local.cluster_addons

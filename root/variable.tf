@@ -64,11 +64,6 @@ variable "cluster_endpoint_public_access" {
   default = true
 }
 
-variable "cluster_service_ipv4_cidr" {
-  type = string
-  description = "Kubernetes 내부의 service 리소스가 사용할 IP 대역"
-}
-
 variable "eks_addon_version" {
   type = map(string)
   description = "EKS에 설치할 add-on의 version"

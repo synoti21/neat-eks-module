@@ -41,6 +41,5 @@ module "eks" {
   eks_managed_node_groups = local.eks_managed_node_groups
   
   cluster_endpoint_public_access = var.cluster_endpoint_public_access
-  cluster_service_ipv4_cidr = var.cluster_service_ipv4_cidr
 }
 

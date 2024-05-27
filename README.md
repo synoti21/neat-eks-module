@@ -3,19 +3,12 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fsynoti21%2Fneat-eks-module&count_bg=%238D3DC8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 ## Usage
-Change the default value in `root/variable.tf` to customize:
+Change the value of `root/setting.tfvars` to customize:
 ```
-variable "vpc_cidr" {
-  type = string
-  description = "VPC의 CIDR 블록 (IP 대역 범위)"
-  default = "10.0.0.0/16"
-}
+vpc_cidr = "10.0.0.0/16"
+azs_count = 3
 
-variable "azs_count" {
-  type = number
-  description = "VPC에서 가용할 Availability Zone의 개수"
-  default = 3
-}
+enable_nat_gateway = true
 ...
 ```
 
@@ -25,11 +18,11 @@ locals {
     eks_managed_node_groups = {
         first = {
             name = "${var.eks_env}-node-group-1"
-            instance_types = ["t3.large"]
+            instance_types = ["t3.large"] # modify this
 
-            min_size     = 1
-            max_size     = 3
-            desired_size = 1
+            min_size     = 1 # modify this
+            max_size     = 3 # modify this
+            desired_size = 1 # modify this
 
             cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
             vpc_security_group_ids            = [module.eks.node_security_group_id]
@@ -49,9 +42,9 @@ After customizing, modify the `root/terraform.tf` to save state in your S3 Bucke
 ```
 terraform {
   backend "s3" {
-    bucket = "synoti21-eks"
-    key    = "eks/root"
-    region = "ap-northeast-2"
+    bucket = "synoti21-eks" # Your Bucket
+    key    = "eks/root" # Key in your Bucket
+    region = "ap-northeast-2" # Region of your Bucket
   }
 
   required_providers {
@@ -72,8 +65,9 @@ aws configure
 
 Finally, run the following command:
 ```
+cd root
 terraform init
-terraform apply
+terraform apply -var-file="settings.tfvars"
 ```
 
 The following resources will be created:
